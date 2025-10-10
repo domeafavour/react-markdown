@@ -1,0 +1,161 @@
+/* ReactMarkdown Storybook styles */
+.markdown-story-wrapper {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  line-height: 1.6;
+  color: #333;
+  max-width: 800px;
+}
+
+.react-markdown {
+  font-family: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+.markdown-story-wrapper h1,
+.markdown-story-wrapper h2,
+.markdown-story-wrapper h3,
+.markdown-story-wrapper h4,
+.markdown-story-wrapper h5,
+.markdown-story-wrapper h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.markdown-story-wrapper h1 {
+  font-size: 2rem;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 0.3em;
+}
+
+.markdown-story-wrapper h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 0.3em;
+}
+
+.markdown-story-wrapper h3 {
+  font-size: 1.25rem;
+}
+
+.markdown-story-wrapper h4 {
+  font-size: 1rem;
+}
+
+.markdown-story-wrapper h5 {
+  font-size: 0.875rem;
+}
+
+.markdown-story-wrapper h6 {
+  font-size: 0.85rem;
+  color: #6a737d;
+}
+
+.markdown-story-wrapper p {
+  margin-bottom: 1em;
+}
+
+.markdown-story-wrapper ul,
+.markdown-story-wrapper ol {
+  margin-bottom: 1em;
+  padding-left: 2em;
+}
+
+.markdown-story-wrapper li {
+  margin-bottom: 0.25em;
+}
+
+.markdown-story-wrapper blockquote {
+  margin: 1em 0;
+  padding: 0 1em;
+  color: #6a737d;
+  border-left: 0.25em solid #dfe2e5;
+}
+
+.markdown-story-wrapper pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f6f8fa;
+  border-radius: 6px;
+  margin-bottom: 1em;
+}
+
+.markdown-story-wrapper code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(175, 184, 193, 0.2);
+  border-radius: 6px;
+}
+
+.markdown-story-wrapper pre code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  background: transparent;
+  border-radius: 0;
+}
+
+.markdown-story-wrapper table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.markdown-story-wrapper table th,
+.markdown-story-wrapper table td {
+  padding: 6px 13px;
+  border: 1px solid #dfe2e5;
+}
+
+.markdown-story-wrapper table th {
+  font-weight: 600;
+  background-color: #f6f8fa;
+}
+
+.markdown-story-wrapper table tr:nth-child(2n) {
+  background-color: #f6f8fa;
+}
+
+.markdown-story-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin: 0.5em 0;
+}
+
+.markdown-story-wrapper a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.markdown-story-wrapper a:hover {
+  text-decoration: underline;
+}
+
+.markdown-story-wrapper hr {
+  height: 0.25em;
+  padding: 0;
+  margin: 24px 0;
+  background-color: #e1e4e8;
+  border: 0;
+}
+
+.markdown-story-wrapper del {
+  text-decoration: line-through;
+}
+
+.markdown-story-wrapper em {
+  font-style: italic;
+}
+
+.markdown-story-wrapper strong {
+  font-weight: 600;
+}
