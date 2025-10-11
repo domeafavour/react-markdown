@@ -64,6 +64,8 @@ export function parser(tokens: MarkedToken[]): MarkdownElement[] {
         const listItemToken = token as Tokens.ListItem;
         elements.push(
           createListItemElement(
+            listItemToken.task,
+            listItemToken.checked,
             parser(
               listItemToken.tokens.flatMap(
                 (t) => (t as Tokens.Text).tokens ?? []

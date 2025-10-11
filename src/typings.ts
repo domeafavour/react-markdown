@@ -50,6 +50,8 @@ export interface MarkdownParagraphElement extends BaseMarkdownElement {
 
 export interface MarkdownListItemElement extends BaseMarkdownElement {
   type: "list_item";
+  task: boolean;
+  checked?: boolean;
 }
 
 export interface MarkdownStrongElement extends BaseMarkdownElement {

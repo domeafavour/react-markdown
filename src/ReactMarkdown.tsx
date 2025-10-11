@@ -11,6 +11,7 @@ import {
   MarkdownImageElement,
   MarkdownLinkElement,
   MarkdownListElement,
+  MarkdownListItemElement,
   MarkdownTableCellElement,
 } from "./typings";
 
@@ -44,7 +45,17 @@ const defaultRenders: Record<
     const listElement = element as MarkdownListElement;
     return listElement.ordered ? <ol>{children}</ol> : <ul>{children}</ul>;
   },
-  list_item: ({ children }) => <li>{children}</li>,
+  list_item: ({ children, element }) => {
+    const itemElement = element as MarkdownListItemElement;
+    return (
+      <li>
+        {itemElement.task ? (
+          <input type="checkbox" checked={itemElement.checked} />
+        ) : null}
+        {children}
+      </li>
+    );
+  },
   link: ({ element, children }) => {
     const linkElement = element as MarkdownLinkElement;
     return (

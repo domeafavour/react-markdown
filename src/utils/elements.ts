@@ -61,11 +61,15 @@ export function createListElement(
 }
 
 export function createListItemElement(
+  task: boolean,
+  checked: boolean | undefined,
   children: MarkdownElement[]
 ): MarkdownListItemElement {
   return {
     type: "list_item",
     text: "",
+    task,
+    checked,
     children,
   };
 }
