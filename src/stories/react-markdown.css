@@ -159,3 +159,39 @@
 .markdown-story-wrapper strong {
   font-weight: 600;
 }
+
+/* Mention styles */
+.markdown-story-wrapper .mention {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  border: 1px solid #bbdefb;
+  display: inline-block;
+}
+
+.markdown-story-wrapper .mention:hover {
+  background-color: #bbdefb;
+  text-decoration: none;
+}
+
+.markdown-story-wrapper .interactive-mention {
+  background-color: #e8f5e8;
+  color: #2e7d32;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  border: 1px solid #a5d6a7;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.markdown-story-wrapper .interactive-mention:hover {
+  background-color: #c8e6c9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

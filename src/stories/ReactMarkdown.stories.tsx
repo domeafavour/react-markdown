@@ -1,10 +1,22 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { createElement } from "react";
 import { ReactMarkdown } from "../ReactMarkdown";
+import { MarkdownHeadingElement } from "../typings";
+import { useReactMarkdown } from "../useReactMarkdown";
 import "./react-markdown.css";
 
-const meta: Meta<typeof ReactMarkdown> = {
+// Wrapper component for stories that uses the hook
+function ReactMarkdownStory({
+  markdown,
+  ...options
+}: { markdown: string } & Parameters<typeof useReactMarkdown>[1]) {
+  const markdownProps = useReactMarkdown(markdown, options);
+  return <ReactMarkdown {...markdownProps} />;
+}
+
+const meta: Meta<typeof ReactMarkdownStory> = {
   title: "Components/ReactMarkdown",
-  component: ReactMarkdown,
+  component: ReactMarkdownStory,
   parameters: {
     layout: "padded",
     docs: {
@@ -28,7 +40,7 @@ const meta: Meta<typeof ReactMarkdown> = {
       </div>
     ),
   ],
-} satisfies Meta<typeof ReactMarkdown>;
+} satisfies Meta<typeof ReactMarkdownStory>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -281,10 +293,12 @@ npm install react-markdown
 
 \`\`\`tsx
 import { ReactMarkdown } from './ReactMarkdown';
+import { useReactMarkdown } from './useReactMarkdown';
 
 function App() {
   const markdown = '# Hello World';
-  return <ReactMarkdown markdown={markdown} />;
+  const props = useReactMarkdown(markdown);
+  return <ReactMarkdown {...props} />;
 }
 \`\`\`
 
@@ -293,5 +307,65 @@ function App() {
 ---
 
 For more information, visit our [documentation](https://example.com).`,
+  },
+};
+
+// Custom rendering example
+export const CustomRendering: Story = {
+  args: {
+    markdown: `# Custom Rendering Example
+
+## Custom Headings
+This heading will be rendered with custom styling.
+
+### Subheading
+Another heading with different styling.
+
+**Bold text** and *italic text* are also customized.
+
+> This blockquote has custom styling too!`,
+    renders: {
+      heading: ({ element, children }) => {
+        const headingElement = element as MarkdownHeadingElement;
+        return createElement(
+          `h${headingElement.depth}`,
+          {
+            style: {
+              color: "#e91e63",
+              borderLeft: "4px solid #e91e63",
+              paddingLeft: "16px",
+              marginLeft: "-20px",
+            },
+          },
+          children
+        );
+      },
+      strong: ({ children }) => (
+        <strong
+          style={{
+            color: "#9c27b0",
+            backgroundColor: "#f3e5f5",
+            padding: "2px 4px",
+            borderRadius: "3px",
+          }}
+        >
+          {children}
+        </strong>
+      ),
+      blockquote: ({ children }) => (
+        <blockquote
+          style={{
+            backgroundColor: "#fff3e0",
+            borderLeft: "4px solid #ff9800",
+            padding: "16px",
+            margin: "16px 0",
+            borderRadius: "4px",
+            fontStyle: "italic",
+          }}
+        >
+          {children}
+        </blockquote>
+      ),
+    },
   },
 };
