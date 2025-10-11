@@ -59,7 +59,8 @@
     "test": "vitest",
     "build": "tsup",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "build-storybook:ghpages": "storybook build --output-dir storybook-static"
   },
   "dependencies": {
     "@domeadev/react-elements-renderer": "^0.0.1",

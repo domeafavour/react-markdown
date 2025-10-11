@@ -11,6 +11,12 @@ A lightweight, customizable React component for rendering Markdown content with 
 - 📝 **GFM Support**: GitHub Flavored Markdown support out of the box
 - 📚 **Storybook**: Interactive examples and documentation
 
+## 📖 Documentation & Examples
+
+**[View Live Storybook Documentation →](https://domeafavour.github.io/react-markdown/)**
+
+Explore interactive examples, API documentation, and usage patterns in our Storybook deployment.
+
 ## Installation
 
 ### npm
@@ -271,11 +277,41 @@ function TaskListExample() {
 
 ## Development
 
-### Storybook
+### Build
+
+```bash
+pnpm build
+```
+
+### Test
+
+```bash
+pnpm test
+```
+
+### Storybook Development
+
+Start the development server:
 
 ```bash
 pnpm storybook
 ```
+
+Build Storybook for production:
+
+```bash
+pnpm build-storybook
+```
+
+The Storybook documentation is automatically deployed to GitHub Pages on every push to the `main` branch.
+
+### GitHub Pages Setup
+
+For repository maintainers, the GitHub Pages deployment is handled automatically via GitHub Actions. To enable this:
+
+1. Go to your repository's **Settings** → **Pages**
+2. Set **Source** to "GitHub Actions"
+3. The workflow will automatically deploy Storybook to `https://[username].github.io/[repository-name]/`
 
 ## Contributing
 
