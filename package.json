@@ -53,6 +53,6 @@
   },
   "dependencies": {
     "@domeadev/react-elements-renderer": "^0.0.1",
-    "marked": "16.2"
+    "marked": "^16.2.0"
   }
 }
