@@ -1,7 +1,7 @@
 {
   "name": "@domeadev/react-markdown",
   "version": "0.0.1",
-  "description": "<description>",
+  "description": "A lightweight, customizable React component for rendering Markdown content with TypeScript support and extensible rendering.",
   "types": ".dist/index.d.ts",
   "main": ".dist/index.js",
   "module": ".dist/index.mjs",
@@ -16,7 +16,14 @@
   },
   "keywords": [
     "react",
-    "markdown"
+    "markdown",
+    "typescript",
+    "markdown-parser",
+    "markdown-renderer",
+    "react-component",
+    "customizable",
+    "lightweight",
+    "extensible"
   ],
   "author": "domeafavour",
   "license": "MIT",
