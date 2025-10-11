@@ -1,4 +1,4 @@
-import { Tokens } from "marked";
+import { Token, Tokens } from "marked";
 
 export interface BaseMarkdownElement {
   type: string;
@@ -128,3 +128,37 @@ export type MarkdownElement =
   | MarkdownTableCellElement
   | MarkdownSpaceElement
   | MarkdownTextElement;
+
+export type DefaultTokenMap = {
+  space: Tokens.Space;
+  hr: Tokens.Hr;
+  br: Tokens.Br;
+  heading: Tokens.Heading;
+  list: Tokens.List;
+  list_item: Tokens.ListItem;
+  link: Tokens.Link;
+  code: Tokens.Code;
+  image: Tokens.Image;
+  paragraph: Tokens.Paragraph;
+  strong: Tokens.Strong;
+  em: Tokens.Em;
+  codespan: Tokens.Codespan;
+  blockquote: Tokens.Blockquote;
+  del: Tokens.Del;
+  table: Tokens.Table;
+};
+
+export type ParserFunc = (tokens: Token[]) => MarkdownElement[];
+
+export type AnyTokenParserFunc = (
+  token: Token,
+  parser: ParserFunc
+) => MarkdownElement;
+
+export type DefaultParsers =
+  | {
+      [key in keyof DefaultTokenMap]: (
+        token: DefaultTokenMap[key],
+        parser: ParserFunc
+      ) => MarkdownElement;
+    };

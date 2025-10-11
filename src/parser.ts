@@ -1,5 +1,5 @@
-import { Token as MarkedToken, Tokens } from "marked";
-import { MarkdownElement } from "./typings";
+import { Token, Tokens } from "marked";
+import { AnyTokenParserFunc, DefaultParsers, MarkdownElement } from "./typings";
 import {
   createBlockquoteElement,
   createBrElement,
@@ -24,141 +24,62 @@ import {
   createTextElement,
 } from "./utils/elements";
 
+export const defaultParsers: DefaultParsers = {
+  space: () => createSpaceElement(),
+  hr: () => createHrElement(),
+  br: () => createBrElement(),
+  heading: (token, parser) =>
+    createHeadingElement(token.depth, parser(token.tokens)),
+  list: (token, parser) =>
+    createListElement(token.ordered, parser(token.items)),
+  list_item: (token, parser) =>
+    createListItemElement(
+      token.task,
+      token.checked,
+      parser(token.tokens.flatMap((t) => (t as Tokens.Text).tokens ?? []))
+    ),
+  link: (token, parser) => createLinkElement(token.href, parser(token.tokens)),
+  code: (token) => createCodeElement(token.text, token.lang),
+  image: (token) => createImageElement(token.href, token.title ?? token.text),
+  paragraph: (token, parser) => createParagraphElement(parser(token.tokens)),
+  strong: (token, parser) => createStrongElement(parser(token.tokens)),
+  em: (token, parser) => createEmphasisElement(parser(token.tokens)),
+  codespan: (token) => createCodespanElement(token.text),
+  blockquote: (token, parser) => createBlockquoteElement(parser(token.tokens)),
+  del: (token, parser) => createDeleteElement(parser(token.tokens)),
+  table: (token, parser) =>
+    createTableElement(token.align, [
+      createTableHeaderElement([
+        createTableRowElement(
+          token.header.map((cell) =>
+            createTableCellElement(true, cell.align, parser(cell.tokens))
+          )
+        ),
+      ]),
+      createTableBodyElement(
+        token.rows.map((row) =>
+          createTableRowElement(
+            row.map((cell) =>
+              createTableCellElement(false, cell.align, parser(cell.tokens))
+            )
+          )
+        )
+      ),
+    ]),
+};
+
 /**
  * (marked)tokens to markdown elements
  * @param tokens
  * @returns
  */
-export function parser(tokens: MarkedToken[]): MarkdownElement[] {
+export function parser(tokens: Token[]): MarkdownElement[] {
   const elements: MarkdownElement[] = [];
-
   for (const token of tokens) {
-    switch (token.type) {
-      case "space": {
-        elements.push(createSpaceElement());
-        break;
-      }
-      case "hr": {
-        elements.push(createHrElement());
-        break;
-      }
-      case "br": {
-        elements.push(createBrElement());
-        break;
-      }
-      case "heading": {
-        const headingToken = token as Tokens.Heading;
-        elements.push(
-          createHeadingElement(headingToken.depth, parser(headingToken.tokens))
-        );
-        break;
-      }
-      case "list": {
-        const listToken = token as Tokens.List;
-        elements.push(
-          createListElement(listToken.ordered, parser(listToken.items))
-        );
-        break;
-      }
-      case "list_item": {
-        const listItemToken = token as Tokens.ListItem;
-        elements.push(
-          createListItemElement(
-            listItemToken.task,
-            listItemToken.checked,
-            parser(
-              listItemToken.tokens.flatMap(
-                (t) => (t as Tokens.Text).tokens ?? []
-              )
-            )
-          )
-        );
-        break;
-      }
-      case "link": {
-        const linkToken = token as Tokens.Link;
-        elements.push(
-          createLinkElement(linkToken.href, parser(linkToken.tokens))
-        );
-        break;
-      }
-      case "code": {
-        const codeToken = token as Tokens.Code;
-        elements.push(createCodeElement(codeToken.text, codeToken.lang));
-        break;
-      }
-      case "image": {
-        const imageToken = token as Tokens.Image;
-        elements.push(
-          createImageElement(
-            imageToken.href,
-            imageToken.title ?? imageToken.text
-          )
-        );
-        break;
-      }
-      case "paragraph": {
-        const paragraphToken = token as Tokens.Paragraph;
-        elements.push(createParagraphElement(parser(paragraphToken.tokens)));
-        break;
-      }
-      case "strong": {
-        const strongToken = token as Tokens.Strong;
-        elements.push(createStrongElement(parser(strongToken.tokens)));
-        break;
-      }
-      case "em": {
-        const emToken = token as Tokens.Em;
-        elements.push(createEmphasisElement(parser(emToken.tokens)));
-        break;
-      }
-      case "codespan": {
-        elements.push(createCodespanElement((token as Tokens.Codespan).text));
-        break;
-      }
-      case "blockquote": {
-        const blockquoteToken = token as Tokens.Blockquote;
-        elements.push(createBlockquoteElement(parser(blockquoteToken.tokens)));
-        break;
-      }
-      case "del": {
-        const delToken = token as Tokens.Del;
-        elements.push(createDeleteElement(parser(delToken.tokens)));
-        break;
-      }
-      case "table": {
-        const tableToken = token as Tokens.Table;
-        elements.push(
-          createTableElement(tableToken.align, [
-            createTableHeaderElement([
-              createTableRowElement(
-                tableToken.header.map((cell) =>
-                  createTableCellElement(true, cell.align, parser(cell.tokens))
-                )
-              ),
-            ]),
-            createTableBodyElement(
-              tableToken.rows.map((row) =>
-                createTableRowElement(
-                  row.map((cell) =>
-                    createTableCellElement(
-                      false,
-                      cell.align,
-                      parser(cell.tokens)
-                    )
-                  )
-                )
-              )
-            ),
-          ])
-        );
-        break;
-      }
-      default: {
-        elements.push(createTextElement(token.raw));
-        break;
-      }
-    }
+    const p = defaultParsers[token.type as keyof DefaultParsers] as
+      | AnyTokenParserFunc
+      | undefined;
+    elements.push(p ? p(token, parser) : createTextElement(token.raw));
   }
   return elements;
 }
