@@ -1,4 +1,6 @@
-import { Token, Tokens } from "marked";
+import { RenderElementProps } from "@domeadev/react-elements-renderer";
+import { Token, TokenizerExtension, Tokens } from "marked";
+import { ReactNode } from "react";
 
 export interface BaseMarkdownElement {
   type: string;
@@ -162,3 +164,21 @@ export type DefaultParsers =
         parser: ParserFunc
       ) => MarkdownElement;
     };
+
+export interface ReactMarkdownExtension<
+  T extends Tokens.Generic = Tokens.Generic,
+  E extends BaseMarkdownElement = BaseMarkdownElement
+> extends TokenizerExtension {
+  parser: (token: T, parser: ParserFunc) => E;
+  /** Render `element.text` by default */
+  render?: (renderElementProps: RenderElementProps<E>) => ReactNode;
+}
+
+export type MarkdownElementRenderer<
+  T extends BaseMarkdownElement = BaseMarkdownElement
+> = (renderElementProps: RenderElementProps<T>) => ReactNode;
+
+export type DefaultElementRenders = Record<
+  MarkdownElement["type"],
+  MarkdownElementRenderer<MarkdownElement>
+>;

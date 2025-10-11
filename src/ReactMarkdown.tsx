@@ -1,11 +1,9 @@
+import { ElementsRenderer } from "@domeadev/react-elements-renderer";
+import { Tokens } from "marked";
+import { createElement } from "react";
 import {
-  ElementsRenderer,
-  RenderElementProps,
-} from "@domeadev/react-elements-renderer";
-import { marked, MarkedExtension, MarkedOptions } from "marked";
-import { createElement, ReactNode, useMemo } from "react";
-import { parser } from "./parser";
-import {
+  BaseMarkdownElement,
+  DefaultElementRenders,
   MarkdownElement,
   MarkdownHeadingElement,
   MarkdownImageElement,
@@ -14,26 +12,16 @@ import {
   MarkdownListItemElement,
   MarkdownTableCellElement,
 } from "./typings";
+import { useReactMarkdown } from "./useReactMarkdown";
 
-interface Props {
-  markdown: string;
-  renders?: Partial<
-    Record<
-      MarkdownElement["type"] | (string & {}),
-      (props: RenderElementProps<MarkdownElement>) => ReactNode
-    >
-  >;
-
-  options?: MarkedOptions<string, string>;
-  extensions?: MarkedExtension[];
-}
+interface Props<
+  T extends Tokens.Generic = Tokens.Generic,
+  E extends BaseMarkdownElement = BaseMarkdownElement
+> extends ReturnType<typeof useReactMarkdown<T, E>> {}
 
 export type ReactMarkdownProps = Props;
 
-const defaultRenders: Record<
-  MarkdownElement["type"],
-  (renderElementProps: RenderElementProps<MarkdownElement>) => ReactNode
-> = {
+const defaultRenders: DefaultElementRenders = {
   br: () => <br />,
   hr: () => <hr />,
   heading: ({ element, children }) => {
@@ -91,21 +79,7 @@ const defaultRenders: Record<
   space: () => null,
 };
 
-export function ReactMarkdown({
-  markdown,
-  renders,
-  options,
-  extensions,
-}: Props) {
-  const elements = useMemo(
-    () =>
-      parser(
-        marked
-          .use(...(extensions ?? []))
-          .lexer(markdown, { gfm: true, ...options })
-      ),
-    [markdown, extensions, options]
-  );
+export function ReactMarkdown({ elements, renders }: Props) {
   return (
     <ElementsRenderer
       elements={elements}
@@ -120,7 +94,7 @@ export function ReactMarkdown({
               childElements,
               element,
             })
-          : null;
+          : element.text;
       }}
     />
   );

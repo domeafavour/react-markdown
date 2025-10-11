@@ -73,13 +73,20 @@ export const defaultParsers: DefaultParsers = {
  * @param tokens
  * @returns
  */
-export function parser(tokens: Token[]): MarkdownElement[] {
+export function parser(
+  tokens: Token[],
+  extended?: Record<string, AnyTokenParserFunc>
+): MarkdownElement[] {
   const elements: MarkdownElement[] = [];
   for (const token of tokens) {
-    const p = defaultParsers[token.type as keyof DefaultParsers] as
-      | AnyTokenParserFunc
-      | undefined;
-    elements.push(p ? p(token, parser) : createTextElement(token.raw));
+    const p = { ...defaultParsers, ...extended }[
+      token.type as keyof DefaultParsers
+    ] as AnyTokenParserFunc | undefined;
+    elements.push(
+      p
+        ? p(token, (childTokens) => parser(childTokens, extended))
+        : createTextElement(token.raw)
+    );
   }
   return elements;
 }
