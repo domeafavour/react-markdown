@@ -177,11 +177,28 @@ import { ReactMarkdownExtension } from "@domeadev/react-markdown";
 // Example: Custom mention extension
 const mentionExtension: ReactMarkdownExtension = {
   name: "mention",
+  level: "inline",
+  start(src: string) {
+    return src.indexOf("@");
+  },
+  tokenizer(src: string) {
+    // Match @username pattern (letters, numbers, underscore, hyphen)
+    const rule = /^@([a-zA-Z0-9_-]+)/;
+    const match = rule.exec(src);
+
+    if (match) {
+      return {
+        type: "mention",
+        raw: match[0],
+        username: match[1],
+      };
+    }
+    return undefined;
+  },
   parser: (token) => ({
     type: "mention",
-    text: token.text,
+    text: token.raw,
     username: token.username,
-    children: [],
   }),
   render: ({ element }) => <span className="mention">@{element.username}</span>,
 };
