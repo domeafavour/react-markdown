@@ -1,6 +1,6 @@
 {
   "name": "@domeadev/react-markdown",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A lightweight, customizable React component for rendering Markdown content with TypeScript support and extensible rendering.",
   "types": ".dist/index.d.ts",
   "main": ".dist/index.js",
